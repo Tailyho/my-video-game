@@ -426,20 +426,15 @@ function fadeInScene() {
   }, 100);
 }
 
-// Запускаем плавное появление после инициализации
-init().then(() => fadeInScene());
+function loop() {
+  renderer.render(scene, camera);
+  updateBee();
+  if (!dead) {
+    requestAnimationFrame(loop);
+  }
+}
 
-// 3. Оптимизация: ограничиваем частоту рендера (если нужно)
-// let lastRender = 0;
-// function optimizedLoop(timestamp) {
-//   if (timestamp - lastRender > 16) { // ~60 FPS
-//     renderer.render(scene, camera);
-//     updateBee();
-//     lastRender = timestamp;
-//   }
-//   requestAnimationFrame(optimizedLoop);
-// }
-// requestAnimationFrame(optimizedLoop);
-      // Инициализация
-  window.addEventListener('load', init, false);
-</script>  <!-- Здесь обязателен закрывающий тег -->
+// Инициализация при загрузке окна
+window.addEventListener('load', init, false);
+
+</script>
