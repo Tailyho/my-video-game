@@ -266,54 +266,45 @@ this.head.position.y -= 10; // Корректировка позиции гол�
 this.mesh.add(this.tail);
 
 
-// WINGS (крылья)
-const geomWing = new THREE.Geometry();
+  // WINGS
+  const geomWing = new THREE.Geometry();
 
-// Вершины для левого крыла
-geomWing.vertices.push(new THREE.Vector3(150, 100, -100));
-geomWing.vertices.push(new THREE.Vector3(200, 100, 50));
-geomWing.vertices.push(new THREE.Vector3(150, 100, 150));
-geomWing.vertices.push(new THREE.Vector3(0, 0, 0));
+  geomWing.vertices.push(new THREE.Vector3(150, 100, -100));
+  geomWing.vertices.push(new THREE.Vector3(200, 100, 50));
+  geomWing.vertices.push(new THREE.Vector3(150, 100, 150));
+  geomWing.vertices.push(new THREE.Vector3(0, 0, 0));
+
+  geomWing.vertices.push(new THREE.Vector3(-150, 100, -100));
+  geomWing.vertices.push(new THREE.Vector3(-200, 100, 50));
+  geomWing.vertices.push(new THREE.Vector3(-150, 100, 150));
+  geomWing.vertices.push(new THREE.Vector3(0, 0, 0));
+
+  geomWing.faces.push(new THREE.Face3(0, 1, 2));
+  geomWing.faces.push(new THREE.Face3(0, 3, 2));
+
+  geomWing.faces.push(new THREE.Face3(4, 5, 6));
+  geomWing.faces.push(new THREE.Face3(4, 6, 7));
+
+  const material = new THREE.MeshBasicMaterial({
+    color: colors.white,
+    transparent: true,
+    opacity: 0.5,
+    side: THREE.DoubleSide });
 
 
-// Вершины для правого крыла
-geomWing.vertices.push(new THREE.Vector3(-150, 100, -100));
-geomWing.vertices.push(new THREE.Vector3(-200, 100, 50));
-geomWing.vertices.push(new THREE.Vector3(-150, 100, 150));
-geomWing.vertices.push(new THREE.Vector3(0, 0, 0));
+  this.wings = new THREE.Mesh(geomWing, material);
+  this.wings.castShadow = true;
+  this.wings.receiveShadow = true;
+  this.wings.position.x = 0;
+  this.wings.position.y = 75;
+  this.wings.position.z = -65;
+  this.mesh.add(this.wings);
 
-
-// Грани для левого крыла
-geomWing.faces.push(new THREE.Face3(0, 1, 2));
-geomWing.faces.push(new THREE.Face3(0, 3, 2));
-
-
-geomWing.faces.push(new THREE.Face3(4, 5, 6));  // Треугольник 1
-geomWing.faces.push(new THREE.Face3(4, 7, 6));  // Треугольник 2 (вершина 7 вместо 4)
-
-
-
-const material = new THREE.MeshBasicMaterial({
-  color: colors.white,
-  transparent: true,
-  opacity: 0.5,
-  side: THREE.DoubleSide
-});
-
-this.wings = new THREE.Mesh(geomWing, material);
-this.wings.castShadow = true;
-this.wings.receiveShadow = true;
-this.wings.position.x = 0;
-this.wings.position.y = 75;
-this.wings.position.z = -65;
-this.mesh.add(this.wings);
-
-// STING (жало)
-const geomSting = new THREE.CylinderGeometry(20, 0, 50, 10);
-const matSting = new THREE.MeshPhongMaterial({
-  color: colors.white,
-  flatShading: THREE.FlatShading
-});
+  // STING
+  const geomSting = new THREE.CylinderGeometry(20, 0, 50, 10);
+  const matSting = new THREE.MeshPhongMaterial({
+    color: colors.white,
+    flatShading: THREE.FlatShading });
 
 
 this.sting = new THREE.Mesh(geomSting, matSting);
