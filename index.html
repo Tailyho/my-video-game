@@ -2,15 +2,42 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Интерактивное видео</title>
+  <title>Тест прокрутки после видео</title>
   <style>
-    body, html { margin: 0; padding: 0; }
-    .video-container { width: 100%; max-width: 800px; margin: 0 auto; }
-    video { width: 100%; display: block; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      min-height: 200vh; /* Увеличиваем высоту страницы для прокрутки */
+    }
+    
+    .video-container {
+      width: 100%;
+      max-width: 600px;
+      margin: 40px auto;
+      text-align: center;
+    }
+    
+    video {
+      width: 100%;
+      display: block;
+    }
+    
+    .target-section {
+      height: 150px;
+      background-color: #ff4d4d;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin: 800px auto 0;
+      border-radius: 10px;
+    }
   </style>
 </head>
 <body>
   <div class="video-container">
+    <h2>Видео (нажмите и удерживайте для воспроизведения)</h2>
     <video
       id="myVideo"
       src="https://raw.githubusercontent.com/Tailyho/my-video-game/main/talar%20(online-video-cutter.com).mp4"
@@ -18,45 +45,59 @@
     ></video>
   </div>
 
-  <div id="nextSection" style="margin-top: 40px;">
-    <h1>Следующий раздел</h1>
-    <p>Контент после видео.</p>
+  <div id="nextSection" class="target-section">
+    ЭТО МЕСТО, КУДА ПРОИЗОЙДЁТ ПРОКРУТКА
   </div>
-
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const video = document.getElementById('myVideo');
 
+      // Убираем стандартные кнопки управления
       video.removeAttribute('controls');
+      
+      // Запрещаем контекстное меню (правый клик)
       video.addEventListener('contextmenu', e => e.preventDefault());
 
-      // Управление
-      video.addEventListener('mousedown', () => video.play());
-      video.addEventListener('mouseup', () => video.pause());
-      video.addEventListener('touchstart', () => video.play());
-      video.addEventListener('touchend', () => video.pause());
+      // Запуск при зажатии левой кнопки мыши
+      video.addEventListener('mousedown', () => {
+        video.play();
+      });
+      
+      // Пауза при отпускании кнопки
+      video.addEventListener('mouseup', () => {
+        video.pause();
+      });
+      
+      // Поддержка мобильных устройств (касание)
+      video.addEventListener('touchstart', () => {
+        video.play();
+      });
+      
+      video.addEventListener('touchend', () => {
+        video.pause();
+      });
 
-      // Прокрутка после завершения
+      // Прокрутка вниз после завершения видео
       video.addEventListener('ended', () => {
-        console.log('Видео завершено. Пытаемся прокрутить...');
+        console.log('Видео завершено. Начинаем прокрутку...');
         
         const target = document.getElementById('nextSection');
         if (target) {
-          console.log('Элемент найден, скроллим...');
-          window.scrollTo({
-            top: target.offsetTop,
-            behavior: 'smooth'
+          target.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'center'
           });
+          console.log('Прокрутка выполнена!');
         } else {
-          console.error('#nextSection не найден!');
+          console.error('Элемент #nextSection не найден!');
         }
       });
 
-      // Обработка ошибок
+      // Обработка ошибок загрузки видео
       video.addEventListener('error', (e) => {
-        console.error('Ошибка видео:', e);
-        alert('Видео не загрузилось. Проверьте ссылку и формат.');
+        console.error('Ошибка загрузки видео:', e);
+        alert('Не удалось загрузить видео. Проверьте ссылку и формат файла.');
       });
     });
   </script>
