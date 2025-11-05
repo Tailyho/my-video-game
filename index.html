@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Интерактивное видео</title>
   <style>
+    body, html { margin: 0; padding: 0; }
     .video-container { width: 100%; max-width: 800px; margin: 0 auto; }
     video { width: 100%; display: block; }
   </style>
@@ -27,42 +28,35 @@
     document.addEventListener('DOMContentLoaded', () => {
       const video = document.getElementById('myVideo');
 
-      // Убираем стандартные кнопки
       video.removeAttribute('controls');
-
-      // Запрещаем контекстное меню
       video.addEventListener('contextmenu', e => e.preventDefault());
 
-      // Управление мышью
-      video.addEventListener('mousedown', () => {
-        console.log('Play on mousedown');
-        video.play();
-      });
-      video.addEventListener('mouseup', () => {
-        console.log('Pause on mouseup');
-        video.pause();
-      });
-
-      // Управление касанием (мобильные)
-      video.addEventListener('touchstart', () => {
-        console.log('Play on touchstart');
-        video.play();
-      });
-      video.addEventListener('touchend', () => {
-        console.log('Pause on touchend');
-        video.pause();
-      });
+      // Управление
+      video.addEventListener('mousedown', () => video.play());
+      video.addEventListener('mouseup', () => video.pause());
+      video.addEventListener('touchstart', () => video.play());
+      video.addEventListener('touchend', () => video.pause());
 
       // Прокрутка после завершения
       video.addEventListener('ended', () => {
-        console.log('Video ended, scrolling...');
-        document.getElementById('nextSection').scrollIntoView({ behavior: 'smooth' });
+        console.log('Видео завершено. Пытаемся прокрутить...');
+        
+        const target = document.getElementById('nextSection');
+        if (target) {
+          console.log('Элемент найден, скроллим...');
+          window.scrollTo({
+            top: target.offsetTop,
+            behavior: 'smooth'
+          });
+        } else {
+          console.error('#nextSection не найден!');
+        }
       });
 
       // Обработка ошибок
       video.addEventListener('error', (e) => {
-        console.error('Video error:', e);
-        alert('Ошибка загрузки видео. Проверьте ссылку и формат файла.');
+        console.error('Ошибка видео:', e);
+        alert('Видео не загрузилось. Проверьте ссылку и формат.');
       });
     });
   </script>
