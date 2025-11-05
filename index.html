@@ -288,9 +288,8 @@ geomWing.faces.push(new THREE.Face3(0, 1, 2));
 geomWing.faces.push(new THREE.Face3(0, 3, 2));
 
 
-// Грани для правого крыла
-geomWing.faces.push(new THREE.Face3(4, 5, 6));
-geomWing.faces.push(new THREE.Face3(4, 6, 7));
+geomWing.faces.push(new THREE.Face3(4, 5, 6));  // Треугольник 1
+geomWing.faces.push(new THREE.Face3(4, 7, 6));  // Треугольник 2 (вершина 7 вместо 4)
 
 
 
