@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Видео (удержание мыши)</title>
+  <title>Видео (удержание для воспроизведения)</title>
   <style>
     body {
       margin: 0;
@@ -23,7 +23,7 @@
     video {
       width: 100%;
       border-radius: 8px;
-      cursor: pointer; /* Подсказка, что нужно удерживать */
+      cursor: pointer;
     }
 
     h2 {
@@ -35,7 +35,7 @@
 </head>
 <body>
   <div class="video-container">
-    <h2>Удерживайте мышь для воспроизведения</h2>
+    <h2>Удерживайте палец/мышку для воспроизведения</h2>
     <video
       id="myVideo"
       src="https://raw.githubusercontent.com/Tailyho/my-video-game/main/talar%20(online-video-cutter.com).mp4"
@@ -45,35 +45,56 @@
     ></video>
   </div>
 
+
   <script>
     const video = document.getElementById('myVideo');
-    let isMouseDown = false;
+    let isPressed = false;
     let playbackTimeout;
 
-    // Обработчики событий мыши
+    // === События для ПК (мышь) ===
     video.addEventListener('mousedown', () => {
-      isMouseDown = true;
-      // Запускаем через 0.5 сек удержания
+      isPressed = true;
       playbackTimeout = setTimeout(() => {
-        if (isMouseDown) {
-          video.play().catch(e => console.log('Воспроизведение отклонено:', e));
-        }
+        if (isPressed) video.play().catch(e => console.log('Воспроизведение отклонено:', e));
       }, 500);
     });
 
     video.addEventListener('mouseup', () => {
-      isMouseDown = false;
+      isPressed = false;
       clearTimeout(playbackTimeout);
       video.pause();
     });
 
     video.addEventListener('mouseleave', () => {
-      isMouseDown = false;
+      isPressed = false;
       clearTimeout(playbackTimeout);
       video.pause();
     });
 
-    // Обработка ошибок загрузки
+    // === События для мобильных (касание) ===
+    video.addEventListener('touchstart', (e) => {
+      e.preventDefault(); // Предотвращаем стандартные действия (например, зум)
+      isPressed = true;
+      playbackTimeout = setTimeout(() => {
+        if (isPressed) video.play().catch(e => console.log('Воспроизведение отклонено:', e));
+      }, 500);
+    });
+
+
+    video.addEventListener('touchend', () => {
+      isPressed = false;
+      clearTimeout(playbackTimeout);
+      video.pause();
+    });
+
+    video.addEventListener('touchcancel', () => {
+      isPressed = false;
+      clearTimeout(playbackTimeout);
+      video.pause();
+    });
+
+    // === Общие обработчики ===
+    // Ошибка загрузки
     video.addEventListener('error', (e) => {
       console.error('Ошибка видео:', e);
       alert('Не удалось загрузить видео. Проверьте URL или формат файла.');
@@ -81,7 +102,7 @@
 
     // Разрешаем звук после первого взаимодействия
     video.addEventListener('play', () => {
-      video.muted = false; // Звук включается при старте
+      video.muted = false;
     });
   </script>
 </body>
