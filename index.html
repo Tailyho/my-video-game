@@ -2,108 +2,24 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Видео (удержание для воспроизведения)</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    
-    .video-container {
-      width: 100%;
-      max-width: 600px;
-      text-align: center;
-    }
-    
-    video {
-      width: 100%;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    h2 {
-      color: #555;
-      margin-bottom: 20px;
-      font-size: 16px;
-    }
-  </style>
+  <title>Игра: видео → лабиринт</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="video-container">
-    <h2>Удерживайте палец/мышку для воспроизведения</h2>
-    <video
-      id="myVideo"
-      src="https://raw.githubusercontent.com/Tailyho/my-video-game/main/talar%20(online-video-cutter.com).mp4"
-      preload="auto"
-      playsinline
-      muted
-    ></video>
+  <!-- СЦЕНА 1: Видео -->
+  <div id="scene-video" class="scene active">
+    <div class="video-container">
+      <h2>Удерживайте для воспроизведения</h2>
+      <video id="myVideo" src="media/video/talar.mp4" muted></video>
+    </div>
   </div>
 
+  <!-- СЦЕНА 2: Лабиринт -->
+  <div id="scene-maze" class="scene">
+    <canvas id="mazeCanvas" tabindex="0"></canvas>
+    <button id="btn-restart">Начать заново</button>
+  </div>
 
-  <script>
-    const video = document.getElementById('myVideo');
-    let isPressed = false;
-    let playbackTimeout;
-
-    // === События для ПК (мышь) ===
-    video.addEventListener('mousedown', () => {
-      isPressed = true;
-      playbackTimeout = setTimeout(() => {
-        if (isPressed) video.play().catch(e => console.log('Воспроизведение отклонено:', e));
-      }, 500);
-    });
-
-    video.addEventListener('mouseup', () => {
-      isPressed = false;
-      clearTimeout(playbackTimeout);
-      video.pause();
-    });
-
-    video.addEventListener('mouseleave', () => {
-      isPressed = false;
-      clearTimeout(playbackTimeout);
-      video.pause();
-    });
-
-    // === События для мобильных (касание) ===
-    video.addEventListener('touchstart', (e) => {
-      e.preventDefault(); // Предотвращаем стандартные действия (например, зум)
-      isPressed = true;
-      playbackTimeout = setTimeout(() => {
-        if (isPressed) video.play().catch(e => console.log('Воспроизведение отклонено:', e));
-      }, 500);
-    });
-
-
-    video.addEventListener('touchend', () => {
-      isPressed = false;
-      clearTimeout(playbackTimeout);
-      video.pause();
-    });
-
-    video.addEventListener('touchcancel', () => {
-      isPressed = false;
-      clearTimeout(playbackTimeout);
-      video.pause();
-    });
-
-    // === Общие обработчики ===
-    // Ошибка загрузки
-    video.addEventListener('error', (e) => {
-      console.error('Ошибка видео:', e);
-      alert('Не удалось загрузить видео. Проверьте URL или формат файла.');
-    });
-
-    // Разрешаем звук после первого взаимодействия
-    video.addEventListener('play', () => {
-      video.muted = false;
-    });
-  </script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
