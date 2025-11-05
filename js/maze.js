@@ -110,7 +110,7 @@ function checkCollision(x, y) {
 // Сброс позиции шарика (при перезапуске)
 export function resetMaze() {
   ball.x = 20;
-  ball.y = 2 Newton;
+  ball.y = 20;
   gameOver = false;
   if (ctx) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
