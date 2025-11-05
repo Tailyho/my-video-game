@@ -4,66 +4,67 @@
   <meta charset="UTF-8">
   <title>Интерактивное видео</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    
-    .video-container {
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto 40px;
-    }
-    
-    video {
-      width: 100%;
-      display: block;
-    }
-    
-    .content {
-      max-width: 800px;
-      margin: 0 auto;
-    }
+    .video-container { width: 100%; max-width: 800px; margin: 0 auto; }
+    video { width: 100%; display: block; }
   </style>
 </head>
 <body>
   <div class="video-container">
-    <video id="myVideo" src="https://raw.githubusercontent.com/Tailyho/my-video-game/main/talar%20(online-video-cutter.com).mp4"></video>
+    <video
+      id="myVideo"
+      src="https://raw.githubusercontent.com/Tailyho/my-video-game/main/talar%20(online-video-cutter.com).mp4"
+      playsinline
+    ></video>
   </div>
 
-  <div class="content" id="nextSection">
+  <div id="nextSection" style="margin-top: 40px;">
     <h1>Следующий раздел</h1>
-    <p>Здесь начинается новый контент после видео...</p>
+    <p>Контент после видео.</p>
   </div>
 
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const video = document.getElementById('myVideo');
-      
-      // Удаляем стандартные элементы управления
+
+      // Убираем стандартные кнопки
       video.removeAttribute('controls');
-      
-      // Запрещаем контекстное меню (правый клик)
+
+      // Запрещаем контекстное меню
       video.addEventListener('contextmenu', e => e.preventDefault());
-      
-      // Запуск при зажатии левой кнопки мыши
+
+      // Управление мышью
       video.addEventListener('mousedown', () => {
+        console.log('Play on mousedown');
         video.play();
       });
-      
-      // Пауза при отпускании кнопки
       video.addEventListener('mouseup', () => {
+        console.log('Pause on mouseup');
         video.pause();
       });
-      // Поддержка мобильных (касание)
+
+      // Управление касанием (мобильные)
       video.addEventListener('touchstart', () => {
+        console.log('Play on touchstart');
         video.play();
       });
       video.addEventListener('touchend', () => {
+        console.log('Pause on touchend');
         video.pause();
       });
-      // Прокрутка вниз после завершения видео
+
+      // Прокрутка после завершения
       video.addEventListener('ended', () => {
-        const nextSection = document.getElementById('nextSection');
+        console.log('Video ended, scrolling...');
+        document.getElementById('nextSection').scrollIntoView({ behavior: 'smooth' });
+      });
+
+      // Обработка ошибок
+      video.addEventListener('error', (e) => {
+        console.error('Video error:', e);
+        alert('Ошибка загрузки видео. Проверьте ссылку и формат файла.');
+      });
+    });
+  </script>
+</body>
+</html>
